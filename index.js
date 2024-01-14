@@ -14,11 +14,8 @@ program
   .option('-p, --phone <type>', 'user phone');
 
 program.parse();
-
 const options = program.opts();
-console.log(program.opts());
 
-// TODO: рефакторити
 async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case 'list':
@@ -32,7 +29,7 @@ async function invokeAction({ action, id, name, email, phone }) {
       break;
 
     case 'add':
-      const newContact = addContact(name, email, phone);
+      const newContact = await addContact(name, email, phone);
       console.log(newContact);
       break;
 

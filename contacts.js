@@ -1,11 +1,11 @@
-import { promises as fsPromises } from 'fs';
-import * as path from 'path';
+import fs from 'fs/promises';
+import path from 'path';
 import { nanoid } from 'nanoid';
 
 const contactsPath = path.join('db', 'contacts.json');
 
 async function listContacts() {
-  const data = await fsPromises.readFile(contactsPath, { encoding: 'utf-8' });
+  const data = await fs.readFile(contactsPath, { encoding: 'utf-8' });
   return JSON.parse(data);
 }
 
@@ -21,7 +21,7 @@ async function removeContact(contactId) {
   if (index === -1) return;
 
   const removedContacts = contacts.splice(index, 1);
-  await fsPromises.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
+  await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
 
   return removedContacts;
 }
@@ -31,13 +31,9 @@ async function addContact(name, email, phone) {
   const newContact = { id: nanoid(), name, email, phone };
 
   contacts.push(newContact);
-  await fsPromises.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
+  await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
 
   return newContact;
 }
 
-removeContact('rsKkOQUi80UsgVPCcLZZW');
-
 export { listContacts, getContactById, removeContact, addContact };
-
-// node src/contacts
